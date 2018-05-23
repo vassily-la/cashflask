@@ -1,0 +1,54 @@
+02 MAP INCOMES AND EXPENSES AS PYTHON CLASSES
+
+Won't expose Transaction class on the endpoints.
+Instead, will create two specializations (Income and Expense) to handle the requests.
+
+pwd
+pr/cashman/model
+touch income.py expense.py transaction_type.py
+
+INCOME
+-----
+income.py
+from marshmallow import post_load
+
+from .transaction import Transaction, TransactionSchema
+from .transaction_type import TransactionType
+
+class Income(Transaction):
+    def __init__(self, description, amount):
+        super(Income, self).__init__(description, amount, TransactionType.INCOME)
+
+    def __repr__(self):
+        return '<Income(name={self.description!r})>'.format(self=self)
+
+class IncomeSchema(TransactionSchema):
+    @post_load
+    def make_income(self, data):
+        return Income(**data)
+
+TRANSACTION TYPE ENUMERATOR
+transaction_type.py
+---
+from enum import Enum
+
+class TransactionType(Enum):
+    INCOME = "INCOME"
+    EXPENSES = "EXPENSES"
+
+EXPENSES CLASS + SCHEMA
+class Expense(Transaction):
+    def __init__(self, description, amount):
+        # The only major difference is that the transaction amount is negative super(Expense, self).__init__(description, -abs(amount), TransactionType.EXPENSE)
+
+    def __repr__(self):
+        return '<Expense(name={self.description!r})>'
+
+class ExpenseSchema(TransactionSchema):
+    @post_load
+    def make_expense(self, data):
+        return Expense(**data)
+
+
+NEXT UP:
+04_serialize_deserialize_marshmallow.txt

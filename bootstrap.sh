@@ -1,6 +1,7 @@
 #!/bin/sh
 
-export FLASK_APP=/home/vl/Learn/restfl/cashman-flask-project/index.py
+export FLASK_APP=./index.py
+# export FLASK_APP=/home/vl/Learn/restfl/cashman-flask-project/index.py
 
 source $(pipenv --venv)/bin/activate
 

@@ -1,0 +1,43 @@
+MAP MODELS W/ PYTHON CLASSES
+
+Py classes better than dictionaries.
+
+To map entities as classes
+
+
+mkdir -p cashman/model
+touch cashman/model/__init__.py
+touch cashman/model/transaction.py
+
+transaction.py
+===============
+import datetime as dt
+
+from marshmallow import Schema, fields
+
+class Transaction():
+    def __init__(self, description, amount, type):
+        self.description = description
+        self.amount = amount
+        self.created_at = dt.datetime.now()
+        self.type = type
+
+    def __repr__(self):
+        return '<Transaction(name={self.description!r})>'.format(self=self)
+
+# We use the schema class to deserialize from JSON objects
+# and to serialize data to JSON objects
+# Inherits from superclass Schema in marshmallow
+class TransactionSchema(Schema):
+    description = fields.Str()
+    amount = fields.Number()
+    created_at = fields.Date()
+    type = fields.Str()
+=============
+pipenv install marshmallow
+=============
+Popular Py package for converting complex datatypes (objects..) to and from native Python datasets.
+Use this to a) validate, b) serialize, and c) deserialize data.
+
+NEXT UP:
+03_map_income_expense_as_py_classes.txt
